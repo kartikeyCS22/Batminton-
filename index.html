@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Badminton Tournament Manager</title>
+<meta name="theme-color" content="#10b981">
+<title>Courtrix — Badminton Tournament Manager</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@600;800&display=swap');
 :root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#f5f6fa;--surface:#fff;--surface-2:#f3f5fa;--card-border:#e4e8f1;--card-border-strong:#10b981;
 --emerald:#10b981;--emerald-bright:#047857;--emerald-dim:#e7f8f1;--emerald-line:#a7e6cf;
@@ -339,6 +340,222 @@ table.keys{margin:6px 0 14px}table.keys td{padding:8px 4px}
 .stg{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:#fff;border-radius:99px;padding:2px 8px;margin-right:6px}
 tr.hist-ko td{background:var(--gold-dim)}
 @media print{.tabbar,.mini,#toasts{display:none!important}.sec-match,.sec-table,.sec-hist{display:block!important}.layout{display:block}.scoreboard::before,.shuttle{display:none}}
+
+/* ================= COURTRIX v5 — brand, court design, motion ================= */
+:root{--font-brand:'Unbounded','Plus Jakarta Sans',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1);
+--w1:#10b981;--w2:#46b64a;--w3:#84cc16}
+body{background:
+ radial-gradient(900px 520px at 6% -8%,#d9f5e5,transparent 60%),
+ radial-gradient(800px 520px at 100% 0,#dce8fe,transparent 55%),
+ radial-gradient(#cdd6e6 1px,transparent 1.3px) 0 0/22px 22px,var(--bg)}
+
+/* ---------- ambient layer: giant court + drifting shuttlecocks ---------- */
+.deco{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.deco .big-court{position:absolute;right:-14%;bottom:-10%;width:min(1100px,120vw);color:#10b981;opacity:.075;transform:rotate(-14deg);animation:courtFloat 20s ease-in-out infinite}
+.deco .big-court svg{width:100%;height:auto;display:block}
+@keyframes courtFloat{50%{transform:rotate(-10deg) translateY(-26px)}}
+.fs{position:absolute;bottom:-60px;left:var(--x);width:var(--s);height:var(--s);opacity:0;animation:drift var(--t) linear var(--dl) infinite}
+.fs svg{width:100%;height:100%}
+@keyframes drift{0%{transform:translate(0,0) rotate(var(--r0));opacity:0}10%{opacity:.2}90%{opacity:.2}100%{transform:translate(var(--dx),-118vh) rotate(var(--r1));opacity:0}}
+
+/* ---------- court svg line-drawing ---------- */
+.court-svg{display:block}
+.cl{stroke-dasharray:1;animation:draw 1.9s var(--d,0s) cubic-bezier(.65,0,.35,1) backwards}
+@keyframes draw{from{stroke-dashoffset:1}}
+
+/* ---------- logo + wordmark ---------- */
+.brand{gap:12px}
+.brand-mark{width:44px;height:44px;border-radius:14px;position:relative;overflow:hidden;
+ background:linear-gradient(135deg,#059669 0%,#10b981 45%,#84cc16 100%);
+ box-shadow:0 10px 20px -10px rgba(16,185,129,.9),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -6px 12px -6px rgba(0,0,0,.18)}
+.brand-mark svg{width:34px;height:34px;overflow:visible}
+.brand-mark::after{content:'';position:absolute;top:-20%;left:-70%;width:45%;height:140%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:logoShine 5s 1.2s infinite}
+@keyframes logoShine{0%,60%{left:-70%}100%{left:150%}}
+.logo .sh{transform-box:fill-box;transform-origin:50% 60%;animation:shBob 3.2s ease-in-out infinite}
+@keyframes shBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-2.2px) rotate(-5deg)}}
+.logo .trail{animation:trail 3.2s ease-in-out infinite}
+@keyframes trail{0%,100%{opacity:.25}50%{opacity:.9}}
+.wordmark{font-family:var(--font-brand);font-weight:800;font-size:1.34rem;letter-spacing:-.03em;line-height:1;margin:0;display:flex;align-items:baseline;text-transform:none;color:var(--ink);cursor:default}
+.wordmark span{display:inline-block;transition:color .3s}
+.wordmark .a1{color:var(--w1)}.wordmark .a2{color:var(--w2)}.wordmark .a3{color:var(--w3)}
+.intro .wordmark span{animation:letterIn .7s calc(.15s + var(--i)*.06s) var(--ease) both}
+@keyframes letterIn{from{opacity:0;transform:translateY(.7em) rotate(8deg) scale(.7)}}
+.wordmark:hover span{animation:hop .55s calc(var(--i)*.045s) var(--ease)}
+@keyframes hop{40%{transform:translateY(-.28em) rotate(-6deg)}}
+.subtitle{letter-spacing:.14em;text-transform:uppercase;font-size:.6rem;font-weight:700;margin-top:5px}
+
+/* ---------- topbar ---------- */
+.topbar{position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.84));backdrop-filter:blur(10px);padding-top:13px;animation:dropIn .7s var(--ease) both}
+.topbar::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#10b981,#84cc16,#2563eb,#7c3aed,#10b981);background-size:240% 100%;animation:flow 7s linear infinite}
+@keyframes flow{to{background-position:-240% 0}}
+@keyframes dropIn{from{opacity:0;transform:translateY(-16px)}}
+.status-live{position:relative;animation:livePulse 2.2s infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(101,163,13,.45)}70%,100%{box-shadow:0 0 0 9px rgba(101,163,13,0)}}
+.status-champion{animation:champPulse 2.4s infinite}
+@keyframes champPulse{0%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}70%,100%{box-shadow:0 0 0 10px rgba(245,158,11,0)}}
+
+/* ---------- hero (setup page) ---------- */
+.hero{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;margin-bottom:20px;padding:46px 20px 44px;min-height:300px;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(520px 260px at 15% 0,rgba(190,242,100,.38),transparent 62%),radial-gradient(520px 300px at 100% 100%,rgba(45,212,191,.35),transparent 60%),linear-gradient(135deg,#064e3b,#047857 55%,#0f766e);
+ box-shadow:0 30px 60px -28px rgba(4,120,87,.8);animation:heroIn .9s var(--ease) both}
+@keyframes heroIn{from{opacity:0;transform:translateY(18px) scale(.985)}}
+.hero .court-svg{position:absolute;inset:0;width:100%;height:100%;z-index:-2;color:rgba(255,255,255,.5)}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.12) 50%,transparent 65%);background-size:260% 100%;animation:sweep 6s 1s linear infinite}
+@keyframes sweep{from{background-position:130% 0}to{background-position:-130% 0}}
+.hero-in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.hero .brand-mark{width:78px;height:78px;border-radius:26px;margin-bottom:18px;background:linear-gradient(135deg,#ecfccb,#bef264 40%,#65a30d);animation:logoPop .9s .1s var(--ease) both,logoGlow 3s 1s ease-in-out infinite}
+.hero .brand-mark svg{width:58px;height:58px}
+@keyframes logoPop{from{opacity:0;transform:scale(.3) rotate(-30deg)}}
+@keyframes logoGlow{50%{box-shadow:0 0 0 12px rgba(190,242,100,.2),0 14px 34px -10px rgba(190,242,100,.8)}}
+.hero .wordmark{justify-content:center;font-size:clamp(2.5rem,11vw,4.6rem);color:#fff;letter-spacing:-.035em;--w1:#6ee7b7;--w2:#a3e635;--w3:#d9f99d;text-shadow:0 8px 24px rgba(0,0,0,.25)}
+.hero-tag{margin:14px 0 0;font-size:.74rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:#bbf7d0;animation:rise .8s .55s var(--ease) both}
+.hero-sub{margin:8px 0 0;font-size:.95rem;color:rgba(255,255,255,.82);max-width:440px;animation:rise .8s .7s var(--ease) both}
+.rally{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.rx{position:absolute;top:66%;left:6%;animation:rallyX 7s linear infinite}
+.ry{animation:rallyY 7s ease-in-out infinite}
+.ri{width:34px;height:34px;animation:rallyR 7s ease-in-out infinite;filter:drop-shadow(0 6px 6px rgba(0,0,0,.28))}
+.ri svg{width:34px;height:34px}
+@keyframes rallyX{0%{left:6%}48%{left:90%}50%{left:90%}98%{left:6%}100%{left:6%}}
+@keyframes rallyY{0%,48%,50%,98%,100%{transform:translateY(24px)}24%,74%{transform:translateY(-60px)}}
+@keyframes rallyR{0%{transform:rotate(-125deg)}24%{transform:rotate(-90deg)}48%{transform:rotate(-55deg)}50%{transform:rotate(125deg)}74%{transform:rotate(90deg)}98%{transform:rotate(55deg)}100%{transform:rotate(125deg)}}
+
+/* ---------- entrance choreography (only on first load / stage change) ---------- */
+.intro .stepper{animation:rise .6s .1s var(--ease) both}
+.intro .stat-card{animation:rise .6s var(--ease) both}
+.intro .stat-card:nth-child(1){animation-delay:.12s}.intro .stat-card:nth-child(2){animation-delay:.18s}.intro .stat-card:nth-child(3){animation-delay:.24s}.intro .stat-card:nth-child(4){animation-delay:.30s}.intro .stat-card:nth-child(5){animation-delay:.36s}
+.intro .card{animation:rise .6s .2s var(--ease) both}
+.intro .card:nth-child(2){animation-delay:.3s}.intro .card:nth-child(3){animation-delay:.4s}.intro .card:nth-child(4){animation-delay:.5s}
+.intro .step-line.done{transform-origin:left;animation:grow .9s .3s var(--ease) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.intro table tr{animation:rowIn .5s both var(--ease)}
+@keyframes rowIn{from{opacity:0;transform:translateX(-14px)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- stepper ---------- */
+.stepper{padding:8px 12px 12px;margin:-6px -12px 8px}
+.step{transition:transform .25s var(--ease),box-shadow .25s}
+.step:hover{transform:translateY(-2px)}
+.step.current{animation:ringPulse 2.2s infinite}
+@keyframes ringPulse{0%{box-shadow:0 0 0 0 rgba(132,204,22,.5)}70%,100%{box-shadow:0 0 0 9px rgba(132,204,22,0)}}
+.step.done .step-dot{background:linear-gradient(135deg,#10b981,#059669)}
+.step.current .step-dot{background:linear-gradient(135deg,#84cc16,#65a30d)}
+.step-line.done{background:linear-gradient(90deg,#10b981,#84cc16)}
+
+/* ---------- cards / headings ---------- */
+.card{border-radius:22px;transition:box-shadow .35s var(--ease),border-color .35s}
+.card:not(.modal-card):hover{box-shadow:0 1px 2px rgba(15,23,42,.05),0 22px 44px -24px rgba(15,23,42,.28)}
+.card:not(.modal-card)>h2::before{content:'';display:inline-block;width:20px;height:4px;border-radius:4px;background:linear-gradient(90deg,#10b981,#84cc16);vertical-align:middle;margin:-2px 9px 0 0}
+.stat-card{position:relative;border-radius:18px;background:linear-gradient(180deg,#fff,#f9fbfe);transition:transform .3s var(--ease),box-shadow .3s}
+.stat-card:hover{box-shadow:0 18px 30px -18px rgba(15,23,42,.35)}
+.stat-icon{transition:transform .35s var(--ease)}
+.stat-card:hover .stat-icon{transform:rotate(-10deg) scale(1.15)}
+.stat-value{background:linear-gradient(135deg,var(--ink),#334155);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- buttons ---------- */
+.btn{transition:transform .22s var(--ease),box-shadow .25s,background .2s,border-color .2s}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 18px -12px rgba(15,23,42,.45)}
+.btn:active:not(:disabled){transform:scale(.96)}
+.btn svg{transition:transform .35s var(--ease)}
+.btn:hover:not(:disabled) svg{transform:rotate(-12deg) scale(1.1)}
+.btn-primary{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 10px 20px -12px rgba(16,185,129,.9)}
+.btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#12c48c,#059669);box-shadow:0 14px 24px -12px rgba(16,185,129,.95)}
+.btn-primary::before,.win-btn::before{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .7s var(--ease);pointer-events:none}
+.btn-primary:hover::before,.win-btn:hover::before{left:140%}
+.btn-secondary{background:var(--surface-2)}
+
+/* ---------- match card + court scoreboard ---------- */
+.match-card{border-radius:26px;position:relative;overflow:hidden;animation:rise .45s var(--ease)}
+.match-card::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#10b981,#84cc16,#2563eb);background-size:200% 100%;animation:flow 5s linear infinite}
+.match-label svg{animation:pulseIcon 1.6s ease-in-out infinite}
+@keyframes pulseIcon{50%{transform:scale(1.25)}}
+.scoreboard{min-height:132px;padding:24px 8px}
+.scoreboard::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 134 61' preserveAspectRatio='none'%3E%3Crect width='67' height='61' fill='%2310b981' fill-opacity='.09'/%3E%3Crect x='67' width='67' height='61' fill='%232563eb' fill-opacity='.09'/%3E%3Cg fill='none' stroke='%230f766e' stroke-opacity='.5' stroke-width='1.6' stroke-linejoin='round'%3E%3Crect x='.8' y='.8' width='132.4' height='59.4' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M.8 4.6H133.2M.8 56.4H133.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M47.2 .8V60.2M86.8 .8V60.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M8.4 .8V60.2M125.6 .8V60.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M.8 30.5H47.2M86.8 30.5H133.2' vector-effect='non-scaling-stroke' /%3E%3C/g%3E%3Crect x='66.3' y='0' width='1.4' height='61' fill='%230f172a' fill-opacity='0.38'/%3E%3Cpath d='M67 0V61' stroke='%230f172a' stroke-opacity='0.55' stroke-width='3' stroke-dasharray='1.6 1.6' vector-effect='non-scaling-stroke' fill='none'/%3E%3Crect x='65.4' y='0' width='3.2' height='3' fill='%230f172a' fill-opacity='0.7'/%3E%3Crect x='65.4' y='58' width='3.2' height='3' fill='%230f172a' fill-opacity='0.7'/%3E%3C/svg%3E") center/100% 100% no-repeat;border-radius:14px;box-shadow:0 0 0 1px rgba(15,118,110,.12);animation:courtIn 1.1s var(--ease) both;z-index:0}
+@keyframes courtIn{from{clip-path:inset(0 50% 0 50%);opacity:0}to{clip-path:inset(0 0 0 0);opacity:1}}
+.scoreboard::after{content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:0;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.65) 50%,transparent 60%);background-size:260% 100%;animation:sweep 6s 1.5s linear infinite}
+.scoreboard>*{z-index:1}
+.scoreboard>.shuttle{z-index:3}
+.vs-sep{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;border:0;font-family:var(--font-brand);font-size:.66rem;letter-spacing:.04em;padding:9px 12px;
+ animation:pop .5s .25s both,vsGlow 2.8s 1s ease-in-out infinite}
+@keyframes vsGlow{0%,100%{box-shadow:0 0 0 0 rgba(15,23,42,.25)}50%{box-shadow:0 0 0 8px rgba(15,23,42,0)}}
+.player-slot{transition:transform .35s var(--ease)}
+.player-slot:hover{transform:scale(1.04)}
+.win-btn{border-radius:18px;padding:18px 12px;background:linear-gradient(180deg,#fff,var(--emerald-dim));box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 18px -16px rgba(16,185,129,.9);
+ transition:transform .25s var(--ease),box-shadow .25s,background .25s,color .2s,border-color .2s}
+.win-btn-b{background:linear-gradient(180deg,#fff,var(--blue-dim));box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 18px -16px rgba(37,99,235,.9)}
+.win-btn:hover{background:linear-gradient(135deg,#10b981,#059669);transform:translateY(-4px) scale(1.015)}
+.win-btn-b:hover{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.win-btn:active{transform:scale(.97)}
+.win-label{font-size:1.1rem}
+.up-next{animation:rise .6s .3s var(--ease) both}
+
+/* ---------- tables / chips / progress ---------- */
+tr{transition:background .2s}
+tr td{transition:background .2s,transform .2s}
+table.st tr:hover .rank-cell{color:var(--emerald)}
+.pill,.chip{transition:transform .25s var(--ease)}
+.pill:hover,.chip:hover{transform:translateY(-2px) scale(1.05)}
+.bar{height:10px}
+.bar i{background:linear-gradient(90deg,#84cc16,#10b981,#06b6d4);background-size:200% 100%;animation:flow 4s linear infinite}
+.seed{box-shadow:0 4px 10px -4px rgba(15,23,42,.4)}
+.bracket-node{transition:transform .3s var(--ease),box-shadow .3s}
+.bracket-node:hover{transform:translateX(5px);box-shadow:0 12px 24px -16px rgba(15,23,42,.35)}
+.bracket-live{animation:rise .3s ease,bPulse 2.4s .4s infinite}
+@keyframes bPulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}70%,100%{box-shadow:0 0 0 10px rgba(16,185,129,0)}}
+.ko-alert{animation:rise .5s var(--ease)}
+.qual-banner{animation:rise .5s var(--ease)}
+
+/* ---------- setup form ---------- */
+.np-input{font-size:1.4rem;font-weight:800;text-align:center;border-radius:14px;padding:10px 12px;transition:transform .2s var(--ease),box-shadow .2s,border-color .2s}
+.np-input:focus{transform:scale(1.04)}
+.player-field{transition:transform .25s var(--ease),box-shadow .25s,border-color .25s,background .25s;animation:fieldIn .5s var(--ease) both}
+.player-field:hover{transform:translateY(-2px);box-shadow:0 12px 20px -16px rgba(15,23,42,.45)}
+.player-field:focus-within{border-color:var(--emerald);background:#fff;box-shadow:0 0 0 3px var(--emerald-dim)}
+.player-field:focus-within .player-badge{animation:badgePop .5s var(--ease)}
+.player-badge{background:linear-gradient(135deg,#10b981,#65a30d)}
+@keyframes fieldIn{from{opacity:0;transform:translateY(12px) scale(.94)}}
+@keyframes badgePop{40%{transform:scale(1.35) rotate(-10deg)}}
+.player-field:nth-child(1){animation-delay:0.035s}.player-field:nth-child(2){animation-delay:0.07s}.player-field:nth-child(3){animation-delay:0.105s}.player-field:nth-child(4){animation-delay:0.14s}.player-field:nth-child(5){animation-delay:0.175s}.player-field:nth-child(6){animation-delay:0.21s}.player-field:nth-child(7){animation-delay:0.245s}.player-field:nth-child(8){animation-delay:0.28s}.player-field:nth-child(9){animation-delay:0.315s}.player-field:nth-child(10){animation-delay:0.35s}.player-field:nth-child(11){animation-delay:0.385s}.player-field:nth-child(12){animation-delay:0.42s}.player-field:nth-child(13){animation-delay:0.455s}.player-field:nth-child(14){animation-delay:0.49s}.player-field:nth-child(15){animation-delay:0.525s}.player-field:nth-child(16){animation-delay:0.56s}
+.err:not(:empty){animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+ul.rules{list-style:none;padding:0}
+ul.rules li{position:relative;padding-left:32px;margin:11px 0;transition:transform .25s var(--ease);animation:rise .6s var(--ease) both}
+ul.rules li::before{content:'';position:absolute;left:0;top:.05em;width:21px;height:21px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='19.5' r='3.3' fill='%23f59e0b'/%3E%3Cpath d='M8.6 16.5 5 4h14l-3.6 12.5z' fill='%23fff' stroke='%2310b981' stroke-width='1.4' stroke-linejoin='round'/%3E%3Cpath d='M9.2 9h5.6M8.4 12.6h7.2' stroke='%2310b981' stroke-width='1'/%3E%3C/svg%3E") no-repeat center/contain;transition:transform .5s var(--ease)}
+ul.rules li:hover{transform:translateX(5px)}
+ul.rules li:hover::before{transform:rotate(360deg) scale(1.15)}
+ul.rules li:nth-child(1){animation-delay:.25s}ul.rules li:nth-child(2){animation-delay:.33s}ul.rules li:nth-child(3){animation-delay:.41s}ul.rules li:nth-child(4){animation-delay:.49s}ul.rules li:nth-child(5){animation-delay:.57s}ul.rules li:nth-child(6){animation-delay:.65s}
+
+/* ---------- champion ---------- */
+.champion-card{position:relative;isolation:isolate;border-radius:28px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 134 61' preserveAspectRatio='none'%3E%3Crect width='67' height='61' fill='%23f59e0b' fill-opacity='.04'/%3E%3Crect x='67' width='67' height='61' fill='%23f59e0b' fill-opacity='.04'/%3E%3Cg fill='none' stroke='%23b45309' stroke-opacity='.22' stroke-width='1.6' stroke-linejoin='round'%3E%3Crect x='.8' y='.8' width='132.4' height='59.4' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M.8 4.6H133.2M.8 56.4H133.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M47.2 .8V60.2M86.8 .8V60.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M8.4 .8V60.2M125.6 .8V60.2' vector-effect='non-scaling-stroke' /%3E%3Cpath d='M.8 30.5H47.2M86.8 30.5H133.2' vector-effect='non-scaling-stroke' /%3E%3C/g%3E%3Crect x='66.3' y='0' width='1.4' height='61' fill='%2392400e' fill-opacity='0.056999999999999995'/%3E%3Cpath d='M67 0V61' stroke='%2392400e' stroke-opacity='0.0825' stroke-width='3' stroke-dasharray='1.6 1.6' vector-effect='non-scaling-stroke' fill='none'/%3E%3Crect x='65.4' y='0' width='3.2' height='3' fill='%2392400e' fill-opacity='0.105'/%3E%3Crect x='65.4' y='58' width='3.2' height='3' fill='%2392400e' fill-opacity='0.105'/%3E%3C/svg%3E") center/100% 100% no-repeat,linear-gradient(180deg,var(--gold-dim),#fff)}
+.champion-glow{display:block;position:absolute;z-index:-1;left:50%;top:76px;width:620px;height:620px;margin:-310px 0 0 -310px;pointer-events:none;
+ background:repeating-conic-gradient(rgba(245,158,11,.26) 0 8deg,transparent 8deg 16deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 66%);mask:radial-gradient(circle,#000 0,transparent 66%);animation:spin 22s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.champion-trophy{animation:trophy .9s cubic-bezier(.2,1.4,.4,1),floaty 3.2s 1s ease-in-out infinite;box-shadow:0 0 0 8px #fde9b8,0 18px 30px -10px rgba(245,158,11,.7)}
+@keyframes floaty{50%{transform:translateY(-8px) rotate(-3deg)}}
+.champion-tag{animation:rise .7s .4s var(--ease) both}
+.champion-sub{animation:rise .7s .7s var(--ease) both}
+
+/* ---------- overlays / misc ---------- */
+.modal-card{animation:modalIn .4s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(.9)}}
+.modal-overlay{animation:fade .25s ease}
+.tab{transition:background .25s,color .25s,transform .2s var(--ease)}
+.tab:active{transform:scale(.92)}
+.mini{transition:transform .35s var(--ease)}
+.t{border-radius:14px}
+
+/* ---------- phones ---------- */
+@media(max-width:640px){
+ .wordmark{font-size:1.08rem}
+ .brand-mark{width:40px;height:40px;border-radius:13px}.brand-mark svg{width:30px;height:30px}
+ .hero{padding:34px 14px 34px;min-height:270px;border-radius:24px}
+ .hero .brand-mark{width:66px;height:66px;border-radius:22px}.hero .brand-mark svg{width:48px;height:48px}
+ .hero .wordmark{font-size:clamp(2rem,11.5vw,3rem)}
+ .hero-tag{letter-spacing:.18em;font-size:.64rem}
+ .scoreboard{min-height:118px}
+ .ri,.ri svg{width:28px;height:28px}
+}
+@media print{.deco,.hero::after,.rally{display:none!important}.hero{background:#fff;color:#000;box-shadow:none;min-height:0}.hero .court-svg{display:none}.hero .wordmark{color:#000}}
+
 </style></head>
 <body><div class="wrap" id="app"></div>
 <script>
@@ -380,12 +597,12 @@ function mini(){var s=S.stage==='qual'?S.current:(S.stage==='semi'||S.stage==='f
 function goMatch(){setTab('match');window.scrollTo({top:0,behavior:'smooth'})}
 function watchMatch(){if(MO){MO.disconnect();MO=null}var m=document.querySelector('.match-card'),b=document.getElementById('mini');
   if(!m||!b||!window.IntersectionObserver)return;MO=new IntersectionObserver(function(en){b.classList.toggle('on',!en[0].isIntersecting)});MO.observe(m)}
-function setTitle(){var t='Badminton Tournament',ic='🏸';
+function setTitle(){var t='Courtrix · Badminton Tournament',ic='🏸';
   try{if(S.stage==='qual'&&S.current)t=S.players[S.current.a].name+' vs '+S.players[S.current.b].name+' · Match '+(S.history.length+1);
   else if(S.stage==='semi'||S.stage==='final'){var s=curSeries();if(s)t=s.label+' · '+S.players[s.a].name+' vs '+S.players[s.b].name;ic='🔥'}
   else if(S.stage==='champion'){t='🏆 '+S.players[S.champion].name+' wins!';ic='🏆'}}catch(e){}
   document.title=t;var l=document.querySelector('link[rel=icon]');if(!l){l=document.createElement('link');l.rel='icon';document.head.appendChild(l)}
-  l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">'+ic+'</text></svg>')}
+  l.href=ic==='🏸'?FAV:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">'+ic+'</text></svg>')}
 function densLabel(){return ICON.rows+'<span class="lbl"> '+(compact?'Comfortable':'Compact')+'</span>'}
 function toggleDensity(){compact=!compact;try{localStorage.setItem('bt_dens',compact?'1':'0')}catch(e){}document.body.classList.toggle('compact',compact);var b=document.getElementById('dens');if(b)b.innerHTML=densLabel()}
 function help(){closeBig();var o=document.createElement('div');o.className='modal-overlay big';o.onclick=function(e){if(e.target===o)closeBig()};
@@ -449,7 +666,7 @@ document.addEventListener('keydown',function(e){
   if(k==='b'||k==='2')pick(s.b);
 });
 function summary(){
-  var l=['Badminton Tournament'],r=S.players.map(function(_,i){return i}).sort(function(a,b){return tw(b).w-tw(a).w});
+  var l=['Courtrix - Badminton Tournament'],r=S.players.map(function(_,i){return i}).sort(function(a,b){return tw(b).w-tw(a).w});
   if(S.champion!=null)l.push('Champion: '+S.players[S.champion].name);
   r.forEach(function(i,k){l.push((k+1)+'. '+S.players[i].name+' - '+tw(i).w+'W/'+tw(i).pl+'P ('+S.players[i].status+')')});
   l.push('','Matches:');S.history.forEach(function(m){l.push('#'+m.no+' '+S.players[m.a].name+' vs '+S.players[m.b].name+' -> '+S.players[m.w].name)});
@@ -609,8 +826,7 @@ function pill(p){
 function render(){
   var h='';setTitle();
   if(S.stage==='setup'){renderSetup();return}
-  h+='<header class="topbar"><div class="brand"><span class="brand-mark">'+ICON.racket+'</span><div><h1>BADMINTON TOURNAMENT</h1>'+
-    '<p class="subtitle">Tournament Management Dashboard</p></div></div>'+
+  h+='<header class="topbar"><div class="brand">'+brandHTML()+'</div>'+
     '<div class="topbar-right"><span class="status-badge '+statusClass()+'">'+statusLabel()+'</span>'+
     '<button class="btn" id="snd" onclick="toggleSound()" title="Sound (M)">'+sndLabel()+'</button>'+
     '<button class="btn hide-sm" id="dens" onclick="toggleDensity()" title="Table density">'+densLabel()+'</button>'+
@@ -713,8 +929,7 @@ function history(){
 
 /* ---------- Setup ---------- */
 function renderSetup(){
-  var h='<header class="topbar"><div class="brand"><span class="brand-mark">'+ICON.racket+'</span><div><h1>BADMINTON TOURNAMENT</h1>'+
-   '<p class="subtitle">Tournament Management Dashboard</p></div></div></header>'+stepper()+
+  var h=heroHTML()+stepper()+
   '<div class="card"><h2 class="setup-title">Tournament Setup</h2><p class="setup-hint">Set the number of competitors and enter their names to begin.</p>'+
   '<div class="np-field"><label for="np">Number of players <span style="color:var(--faint)">(3–16)</span></label>'+
   '<input class="np-input" id="np" type="number" min="3" max="16" value="'+dn+'" oninput="setN(this.value)"></div>'+
@@ -746,5 +961,44 @@ function tryStart(){
   e.innerHTML='';
   startTournament(names,dn);
 }
+/* ===== Courtrix visual layer — decoration only, no tournament logic is touched ===== */
+var LOGO='<svg class="logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">'+
+ '<g stroke="#fff" stroke-linecap="round" class="trail"><path d="M5 30.5c-2.2 1.4-3.2 3.4-3.6 5.2" stroke-width="1.8"/><path d="M9.5 36c-1.6 1.7-2.2 3.4-2.4 4.8" stroke-width="1.5"/></g>'+
+ '<g transform="rotate(38 24 22)"><g class="sh">'+
+ '<path d="M17.4 27.6 9.6 7.6C17 4.4 31 4.4 38.4 7.6L30.6 27.6Z" fill="#fff"/>'+
+ '<g stroke="#059669" stroke-width="1.3" stroke-linecap="round"><path d="M15.1 8.4 20.5 27"/><path d="M24 6.2V27.4"/><path d="M32.9 8.4 27.5 27"/><path d="M12.2 15.2C19 12.8 29 12.8 35.8 15.2"/><path d="M14.9 21.6C20 20.2 28 20.2 33.1 21.6"/></g>'+
+ '<rect x="16" y="26.6" width="16" height="3.2" rx="1.6" fill="#fff" stroke="#059669" stroke-width="1.2"/>'+
+ '<path d="M16.6 30.4a7.4 7.4 0 0 0 14.8 0Z" fill="#fbbf24" stroke="#d97706" stroke-width="1.1" stroke-linejoin="round"/>'+
+ '<path d="M20 33.2c1 1.4 2.4 2.1 4 2.1" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".8"/>'+
+ '</g></g></svg>';
+function wordmark(){var n='Courtrix';return '<h1 class="wordmark" aria-label="Courtrix">'+n.split('').map(function(c,i){return '<span'+(i>=5?' class="a a'+(i-4)+'"':'')+' style="--i:'+i+'" aria-hidden="true">'+c+'</span>'}).join('')+'</h1>'}
+function brandHTML(){return '<span class="brand-mark">'+LOGO+'</span><div>'+wordmark()+'<p class="subtitle">Tournament Manager</p></div>'}
+function courtSVG(fit){
+  var L=function(t,a,d){return '<'+t+' class="cl" pathLength="1" '+a+' style="--d:'+d+'s"/>'};
+  return '<svg class="court-svg" viewBox="0 0 134 61" preserveAspectRatio="'+(fit||'xMidYMid slice')+'" fill="none" stroke="currentColor" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+
+   L('rect','x=".6" y=".6" width="132.8" height="59.8"',0)+
+   L('path','d="M.6 4.6H133.4"',.25)+L('path','d="M.6 56.4H133.4"',.25)+
+   L('path','d="M47.2 .6V60.4"',.5)+L('path','d="M86.8 .6V60.4"',.5)+
+   L('path','d="M8.4 .6V60.4"',.7)+L('path','d="M125.6 .6V60.4"',.7)+
+   L('path','d="M.6 30.5H47.2"',.9)+L('path','d="M86.8 30.5H133.4"',.9)+
+   '<rect x="66.5" y="0" width="1" height="61" fill="currentColor" stroke="none" opacity=".45"/>'+
+   '<path d="M67 0V61" stroke-width="1.6" stroke-dasharray=".9 .9" opacity=".6"/>'+
+   '<rect x="65.6" y="0" width="2.8" height="2.4" fill="currentColor" stroke="none"/><rect x="65.6" y="58.6" width="2.8" height="2.4" fill="currentColor" stroke="none"/></svg>'}
+function heroHTML(){return '<section class="hero">'+courtSVG(window.innerWidth>760?'xMidYMid meet':'xMidYMid slice')+'<div class="rally" aria-hidden="true"><div class="rx"><div class="ry"><div class="ri">'+ICON.shuttle+'</div></div></div></div>'+
+  '<div class="hero-in"><span class="brand-mark">'+LOGO+'</span>'+wordmark()+'<p class="hero-tag">Badminton Tournament Manager</p><p class="hero-sub">Qualifiers, semi-finals and the grand final — all played out on one court.</p></div></section>'}
+var FAV='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#059669"/><stop offset=".6" stop-color="#10b981"/><stop offset="1" stop-color="#84cc16"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#g)"/><g transform="rotate(38 24 22)"><path d="M17.4 27.6 9.6 7.6C17 4.4 31 4.4 38.4 7.6L30.6 27.6Z" fill="#fff"/><path d="M24 6.2V27.4M15.1 8.4 20.5 27M32.9 8.4 27.5 27" stroke="#059669" stroke-width="1.4" stroke-linecap="round"/><rect x="16" y="26.6" width="16" height="3.2" rx="1.6" fill="#fff"/><path d="M16.6 30.4a7.4 7.4 0 0 0 14.8 0Z" fill="#fbbf24"/></g></svg>');
+(function(){
+  var d=document.createElement('div');d.className='deco';d.setAttribute('aria-hidden','true');
+  var h='<div class="big-court">'+courtSVG('xMidYMid meet')+'</div>';
+  for(var i=0;i<9;i++){h+='<i class="fs" style="--x:'+(Math.random()*95).toFixed(1)+'vw;--s:'+(16+Math.random()*22).toFixed(0)+'px;--t:'+(15+Math.random()*14).toFixed(1)+'s;--dl:-'+(Math.random()*24).toFixed(1)+'s;--dx:'+((Math.random()-.5)*180).toFixed(0)+'px;--r0:'+(Math.random()*90-45).toFixed(0)+'deg;--r1:'+(Math.random()*360+90).toFixed(0)+'deg">'+ICON.shuttle+'</i>'}
+  d.innerHTML=h;document.body.insertBefore(d,document.body.firstChild);
+  /* entrance animations replay only on first load and on stage changes (not on every click) */
+  var lastStage=null,introT=null,_render=render;
+  render=function(){
+    if(S&&S.stage!==lastStage){lastStage=S.stage;document.body.classList.add('intro');clearTimeout(introT);introT=setTimeout(function(){document.body.classList.remove('intro')},1800)}
+    _render();
+  };
+})();
+
 load();render();
 </script></body></html>
